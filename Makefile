@@ -1,23 +1,31 @@
-TARGET = max_in_arr
+PROJECT_SRCS   = $(wildcard source/*.cpp)
+PROJECT_OBJS   = $(PROJECT_SRCS:.cpp=.cpp.o)
+TARGET         = max_in_arr
+
+$(info "PROJECT_SRCS: $(PROJECT_SRCS)")
+$(info "PROJECT_OBJS: $(PROJECT_OBJS)")
+
+CC       = g++
+CXXFLAGS = -Wall -Wextra -Werror
+LDFLAGS  = 
+
 PREFIX ?= /usr/local/bin
-BUILDIR = build
-SRCS = main.cpp
-OBJS = $(SRCS:.c=.o)
 
-.PHONY: all clean install uninstall
-
+.PHONY: all
 all: $(TARGET)
-$(TARGET): $(OBJS)
-    $(CC) -o $(TARGET) $(OBJS) $(CFLAGS)
- 
-.c.o:
-    $(CC) $(CFLAGS)  -c $< -o $@
 
+$(TARGET): $(PROJECT_OBJS)
+	$(CC) -o $@ $^
+
+%.cpp.o: %.cpp
+	$(CC) $(CXXFLAGS) -c -o $@ $^
+
+.PHONY: clean install uninstall
 clean:
-    rm -rf $(TARGET) $(OBJS)
+	rm -rf $(TARGET) $(PROJECT_OBJS)
 
 install:
-    install $(TARGET) $(PREFIX)
+	install $(TARGET) $(PREFIX)
 
 uninstall:
-    rm -rf $(PREFIX)/$(TARGET)
+	rm -rf $(PREFIX)/$(TARGET)
