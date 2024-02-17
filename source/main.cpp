@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 	try
 	{
 		int max = std::stoi(argv[1]);
-		for (std::size_t i = 2; i < argc; ++i)
+		for (int i = 2; i < argc; ++i)
 		{
 			int val = std::stoi(argv[i]);
 			if (val > max)
