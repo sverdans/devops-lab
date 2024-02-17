@@ -6,7 +6,7 @@ $(info "PROJECT_SRCS: $(PROJECT_SRCS)")
 $(info "PROJECT_OBJS: $(PROJECT_OBJS)")
 
 CC       = g++
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -O2
 LDFLAGS  = 
 
 PREFIX ?= /usr/local/bin
