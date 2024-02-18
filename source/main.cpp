@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-	std::string help_msg { "usage: max_in_arr <%d> [<%d> ...]\n" };
+	std::string help_msg { "usage: arrmax <%d> [<%d> ...]\n" };
 
 	if (argc == 1 || std::strcmp(argv[1], "--help") == 0)
 	{
