@@ -15,9 +15,9 @@ LDFLAGS  =
 DIR_GUARD = @mkdir -p $(@D)
 
 .PHONY: all
-all: $(TARGET)
+all: $(BINDIR)/$(TARGET)
 
-$(TARGET): $(PROJECT_OBJS)
+$(BINDIR)/$(TARGET): $(PROJECT_OBJS)
 	$(DIR_GUARD)
 	$(CC) -o $@ $^
 
@@ -30,7 +30,7 @@ clean:
 	rm -rf $(BINDIR)/$(TARGET) $(PROJECT_OBJS)
 
 install:
-	install $(TARGET) $(PREFIX)
+	install $(BINDIR)/$(TARGET) $(INSTALL_PREFIX)
 
 uninstall:
-	rm -rf $(PREFIX)/$(TARGET)
+	rm -rf $(INSTALL_PREFIX)/$(TARGET)
