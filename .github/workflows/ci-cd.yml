@@ -20,7 +20,7 @@ jobs:
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: project-artifacts
+        name: arrmax-bin
         path: build/bin/arrmax
   
   package:
@@ -30,12 +30,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+    
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
-        name: project-artifacts
-      
+        name: arrmax-bin
+        path: build/bin
+    
     - name: Install packaging tools
       run: |
         sudo apt-get update
@@ -44,4 +45,19 @@ jobs:
     - name: Package creation
       run: |
         echo `ls -R`
-        # Здесь добавьте команды для создания deb пакета, используя артефакты из предыдущего шага
+        sudo chmod +x build/bin/arrmax
+        .github/pack.sh  "build/bin/arrmax" ".github/debian-const.json" "." ${{ github.run_number }}
+        deb_path=`find ./arrmax*.deb`
+    
+    - name: Store package path
+      id: vars
+      run: |
+        deb_path=`find ./arrmax*.deb`
+        echo "deb_path=$deb_path" >> $GITHUB_OUTPUT
+
+    - name: Store package
+      uses: actions/upload-artifact@v4
+      with:
+        name: arrmax-deb
+        path: ${{ steps.vars.outputs.deb_path }}
+
