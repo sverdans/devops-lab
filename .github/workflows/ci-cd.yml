@@ -1,0 +1,47 @@
+name: arrmax ci pipeline
+
+on:
+  push:
+    branches: [ "ci" ] # todo [petrov-a] switch master
+  pull_request:
+    branches: [ "ci" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Build project with Make
+      run: make
+      
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: project-artifacts
+        path: build/bin/arrmax
+  
+  package:
+    needs: build
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: project-artifacts
+      
+    - name: Install packaging tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y <package_name>
+
+    - name: Package creation
+      run: |
+        echo `ls -R`
+        # Здесь добавьте команды для создания deb пакета, используя артефакты из предыдущего шага
