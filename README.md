@@ -5,7 +5,9 @@
 ## Usage
 
 ```
-arrmax <%d> [<%d> ...]
+usage: arrmax [--version] [--help] <%d> [<%d> ...]
+    --help       provides this message
+    --version    show product version
 ```
 
 ### example:
@@ -18,15 +20,10 @@ max: 7
 ## Build
 
 requirements:
-- gcc
+- gcc >= 6.1
 - make
-- libstdc++.so.6
-- libgcc_s.so.1
-- libc.so.6
 
 ```sh
 make
 make install
 ```
-
-
