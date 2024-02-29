@@ -2,9 +2,9 @@ name: arrmax ci pipeline
 
 on:
   push:
-    branches: [ "ci" ] # todo [petrov-a] switch master
+    branches: [ "master" ]
   pull_request:
-    branches: [ "ci" ]
+    branches: [ "master" ]
 
 jobs:
   build:
