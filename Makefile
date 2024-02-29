@@ -17,18 +17,15 @@ LDFLAGS  =
 
 DIR_GUARD = @mkdir -p $(@D)
 
-.PHONY: is_gcc
+.PHONY: all is_gcc
+all: is_gcc $(BINDIR)/$(TARGET)
+
 is_gcc:
 	@if ! [ -x "$$(command -v $(CC))" ]; then      \
 		echo "Compiler $(CC) was not found";       \
 		echo "for ubuntu use \"apt install gcc\""; \
+		exit 1;                                    \
 	fi
-	$(info "gcc checked")
-
-.PHONY: all
-all:
-	is_gcc
-	$(BINDIR)/$(TARGET)
 
 $(BINDIR)/$(TARGET): $(PROJECT_OBJS)
 	$(DIR_GUARD)
