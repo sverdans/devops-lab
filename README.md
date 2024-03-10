@@ -19,11 +19,7 @@ max: 7
 
 ## Build
 
-requirements:
-- gcc >= 6.1
-- make
-
 ```sh
-make
-make install
+cmake -S . -B build
+cmake --build
 ```
