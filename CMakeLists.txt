@@ -8,7 +8,6 @@ set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_CXX_STANDARD 20)
 
 option(ARRMAX_BUILD_TEST "" OFF)
-option(ARRMAX_BUILD_WITH_IWYU "" OFF)
 
 include(cmake/iwyu.cmake)
 
