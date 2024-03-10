@@ -20,6 +20,6 @@ max: 7
 ## Build
 
 ```sh
-cmake -S . -B build
-cmake --build
+cmake -S . -B build -DARRMAX_BUILD_TEST=ON 
+cmake --build build
 ```
