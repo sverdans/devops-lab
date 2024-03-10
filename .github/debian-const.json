@@ -1,6 +1,6 @@
 {
-	"Package": "arrmax",
-	"Section": "utils",
-	"Priority": "optional",
-	"Homepage": "https://github.com/sverdans/devops-lab"
+  "Package": "arrmax",
+  "Section": "utils",
+  "Priority": "optional",
+  "Homepage": "https://github.com/sverdans/devops-lab"
 }
