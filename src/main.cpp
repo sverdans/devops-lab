@@ -1,14 +1,10 @@
 #include <cstring>
-#include <iostream>
 #include <exception>
+#include <iostream>
 #include <span>
 
 #include <arrmax/arrmax.hpp>
 #include <arrmax/version.hpp>
-
-#ifndef ARRMAX_VERSION
-#define ARRMAX_VERSION ""
-#endif
 
 int main(int argc, char** argv)
 {
