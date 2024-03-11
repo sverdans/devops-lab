@@ -3,7 +3,8 @@
 #include <exception>
 #include <span>
 
-#include <arrmax.hpp>
+#include <arrmax/arrmax.hpp>
+#include <arrmax/version.hpp>
 
 #ifndef ARRMAX_VERSION
 #define ARRMAX_VERSION ""
@@ -25,7 +26,7 @@ int main(int argc, char** argv)
 	}
 	else if (std::strcmp(args[0], "--version") == 0)
 	{
-		std::cout << "version: "  << ARRMAX_VERSION << '\n';
+		std::cout << "version: " << arrmax::version() << '\n';
 		return 0;
 	}
 

@@ -1,9 +1,9 @@
 #pragma once
-#include <span>
+#include <string>
 
 namespace arrmax
 {
 
-int max(const std::span<char*>& argv);
+std::string version();
 
 } // namespace arrmax

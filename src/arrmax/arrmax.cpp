@@ -2,12 +2,12 @@
 #include <stdexcept>
 #include <string>
 
-#include <arrmax.hpp>
+#include <arrmax/arrmax.hpp>
 
 namespace arrmax
 {
 
-int max(const std::span<char*> args)
+int max(const std::span<char*>& args)
 {
 	if (args.empty())
 	{
