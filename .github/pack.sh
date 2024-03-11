@@ -1,28 +1,23 @@
 #!/bin/bash
 
-# .github/pack.sh "build/bin/arrmax" ".github/debian-const.json" "." 2
+# .github/pack.sh "build/src/arrmax" "." 2
 # $1 = путь до бинарника
-# $2 = путь до debian-const.json
-# $3 = путь до корневой папки проекта
-# $4 = номер билда
+# $2 = путь до корневой папки проекта
+# $3 = номер билда
+
+pckg_name="arrmax"
+pckg_section="utils"
+pckg_priority="optional"
+pckg_homepage="https://github.com/sverdans/devops-lab"
 
 bin_path=`realpath -s $1`
-debian_const_path=`realpath -s $2`
-git_dir=$3
-build_number=$4
+git_dir=$2
+build_number=$3
 
 if [ ! -f $bin_path ]; then
 	echo "\"$bin_path\" not found!"
 	exit 1
 fi
-
-if [ ! -f $debian_const_path ]; then
-	echo "\"$debian_const_path\" not found!"
-	exit 1
-fi
-
-echo "bin: \"$bin_path\""
-echo "debian-const.json: \"$debian_const_path\""
 
 start_dir=`pwd`
 cd $git_dir
@@ -34,11 +29,6 @@ program_version=$(echo "$program_version" | awk -F': ' '{print $2}')
 
 pckg_arch=`dpkg-architecture | grep "DEB_BUILD_ARCH="`
 pckg_arch=$(echo "$pckg_arch" | awk -F'=' '{print $2}')
-
-pckg_name=$(jq -r     '.Package'  $debian_const_path)
-pckg_section=$(jq -r  '.Section'  $debian_const_path)
-pckg_priority=$(jq -r '.Priority' $debian_const_path)
-pckg_homepage=$(jq -r '.Homepage' $debian_const_path)
 
 pckg_installed_size=$(ls -l --block-size=k "$bin_path" | awk '{print $5}')
 pckg_installed_size="${pckg_installed_size//"K"}"

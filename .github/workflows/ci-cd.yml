@@ -9,55 +9,78 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Build project with Make
-      run: make
-      
-    - name: Archive artifacts
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt install -y g++ cmake
+
+    - name: Build project with CMake
+      run: |
+        cmake -S . -B build -DARRMAX_BUILD_TEST=ON
+        cmake --build build
+        sudo chmod +x build/src/arrmax
+        sudo chmod +x build/test/arrmax-test
+
+    - name: Archive project binary
       uses: actions/upload-artifact@v2
       with:
-        name: arrmax-bin
-        path: build/bin/arrmax
-  
-  package:
+        name: arrmax
+        path: build/src/arrmax
+
+    - name: Archive test binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: arrmax-test
+        path: build/test/arrmax-test
+
+  test:
     needs: build
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Download test binary
+      uses: actions/download-artifact@v2
+      with:
+        name: arrmax-test
+        path: build/test
+
+    - name: Run unit tests
+      run: |
+        sudo chmod +x build/test/arrmax-test
+        build/test/arrmax-test
+
+# [todo] clear test binary from artifacts
+
+  package:
+    needs: test
+    runs-on: ubuntu-22.04
+
+    steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v3
+
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
-        name: arrmax-bin
-        path: build/bin
-    
-    - name: Install packaging tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y jq
+        name: arrmax
+        path: build/src
 
     - name: Package creation
       run: |
-        echo `ls -R`
-        sudo chmod +x build/bin/arrmax
-        .github/pack.sh  "build/bin/arrmax" ".github/debian-const.json" "." ${{ github.run_number }}
-        deb_path=`find ./arrmax*.deb`
-    
+        sudo chmod +x build/src/arrmax
+        .github/pack.sh build/src/arrmax "." ${{ github.run_number }}
+
     - name: Store package path
       id: vars
       run: |
         deb_path=`find ./arrmax*.deb`
         echo "deb_path=$deb_path" >> $GITHUB_OUTPUT
 
-    - name: Store package
+    - name: Archive package
       uses: actions/upload-artifact@v4
       with:
         name: arrmax-deb
         path: ${{ steps.vars.outputs.deb_path }}
-
