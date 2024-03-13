@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install build dependencies
       run: sudo apt install -y g++ cmake
 
     - name: Build project with CMake
@@ -25,13 +25,13 @@ jobs:
         sudo chmod +x build/test/arrmax-test
 
     - name: Archive project binary
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: arrmax
         path: build/src/arrmax
 
     - name: Archive test binary
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: arrmax-test
         path: build/test/arrmax-test
@@ -42,7 +42,7 @@ jobs:
 
     steps:
     - name: Download test binary
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: arrmax-test
         path: build/test
@@ -62,8 +62,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v2
+    - name: Download project binary
+      uses: actions/download-artifact@v4
       with:
         name: arrmax
         path: build/src
@@ -84,3 +84,27 @@ jobs:
       with:
         name: arrmax-deb
         path: ${{ steps.vars.outputs.deb_path }}
+
+  docker-deploy:
+    needs: package
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Download package
+      uses: actions/download-artifact@v4
+      with:
+        name: arrmax-deb
+        path: package
+
+    # [todo] calculate actual project version
+    - name: Creating Docker image
+      run: |
+        docker build -f ./Dockerfiles/ubuntu-22.04.Dockerfile -t arrmax:1.0.0 .
+
+    - name: Run container
+      run: |
+        docker run arrmax:1.0.0
+
